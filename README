@@ -1,0 +1,36 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3839
+
+详细使用说明: http://www.vimer.cn/?p=2433
+
+功能:
+    1. 分享文章中的一段文字，并支持评论
+    2. 直接发送微博
+
+一. 环境依赖
+    python
+二. 安装
+    去 www.vim.org 下载 weibo.vim
+    将weibo.vim 放在 plugin目录
+三. 配置
+目前支持的配置如下:
+    g:weibo_access_token oauth2.0的access_token，是由QQ登录提供的授权token，貌似过期时间是1个月。后面会写出获取这个token的方法。
+    g:weibo_access_token 签名档，默认值是来自weibo.vim，如果不喜欢可以配置为空
+在_vimrc中配置:
+    let g:weibo_access_token = '第四步会生成的access_token'
+四. 生成access_token
+点击如下链接:
+https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=100229856&redirect_uri=vimer.cn&scope=add_t
+
+在进行QQ登录之后，会跳转到类似如下链接:
+http://www.vimer.cn/#access_token=4E6421B8719124324217AF48E085F&expires_in=7776000
+
+其中access_token=后面的即要获取的access_token。
+将其配置到第二步的g:weibo_access_token中。
+如果在使用中，提示 access_token 过期的话，只要按照上面的步骤重新申请一遍即可。
+
+五. 命令
+分享选中的的文字
+    选中之后，按下 ,at， 如果不需要写评论，则直接回车；如果需要评论，则输入空格后，输入评论，回车。
+直接发送微博
+    在normal模式下，直接按下 ,at， 输入空格后，输入文字，回车。
+
