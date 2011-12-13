@@ -12,9 +12,10 @@
 "     HomePage: http://www.vimer.cn
 "
 "      Created: 2011-12-08 00:47:06
-"      Version: 0.0.1
+"      Version: 0.0.2
 "      History:
 "               0.0.1 | dantezhu | 2011-12-08 00:47:06 | initialization
+"               0.0.2 | dantezhu | 2011-12-13 19:15:33 | 优化了代码 <C-R>t
 "
 "=============================================================================
 
@@ -128,32 +129,12 @@ def handle_add_t(access_token, content):
 
 EOF
 
-function! s:AddT(...)
-    " 如果是正常模式，就是主要内容，否则就是评论
-    let comment = (a:0 ? a:1 : '')
-
-    " 如果是选择模式的话，要把这段话拷贝下来
-    let topic = @t
-
-    if len(topic)==0 && len(comment)==0
-        echohl WarningMsg | echo "请选择要分享的文字 或者 在命令后键入要分享的文字" | echohl None
-        return
-    endif
-
-    let content = topic
-
-    if len(comment) > 0
-        if len(topic) > 0
-            let content .= ' '
-        endif
-        let content .= comment
-    endif
-
+function! s:AddT(content)
 python<<EOF
 if vim.eval('g:weibo_t_sign'):
-    all_content = '%s %s' % (vim.eval('content'),vim.eval('g:weibo_t_sign'))
+    all_content = '%s %s' % (vim.eval('a:content'),vim.eval('g:weibo_t_sign'))
 else:
-    all_content = vim.eval('content')
+    all_content = vim.eval('a:content')
 
 handle_add_t(
             vim.eval('g:weibo_access_token'),
@@ -163,7 +144,7 @@ EOF
 
 endfunction
 
-command! -nargs=? -range AddT :call s:AddT(<f-args>)
+command! -nargs=1 -range AddT :call s:AddT(<f-args>)
 
-vnoremap ,at "ty:AddT
-nnoremap ,at :let @t=''<CR>:AddT
+vnoremap ,at "ty:AddT <C-R>t
+nnoremap ,at :AddT
